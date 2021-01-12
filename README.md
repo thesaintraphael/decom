@@ -1,0 +1,1 @@
+Simple JustDjango clone website with some additional functionalities provided by me
