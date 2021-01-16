@@ -20,8 +20,62 @@ def create_ref_code():
 
 class Home(ListView):
     model = Item
-    paginate_by = 10
+    paginate_by = 8
     template_name = 'home.html'
+
+    def get_queryset(self):
+        keyword = self.request.GET.get('keyword')
+        if keyword:
+            new_context = Item.objects.filter(title__contains=keyword)
+            return new_context
+        else:
+            new_context = Item.objects.all()
+            return new_context
+
+
+class HomeOutwear(ListView):
+    model = Item
+    paginate_by = 8
+    template_name = 'outwear.html'
+
+    def get_queryset(self):
+        keyword = self.request.GET.get('keyword')
+        if keyword:
+            new_context = Item.objects.filter(title__contains=keyword, category = "OW")
+            return new_context
+        else:
+            new_context = Item.objects.filter(category='OW')
+            return new_context
+
+
+class HomeShirt(ListView):
+    model = Item
+    paginate_by = 8
+    template_name = 'shirt.html'
+
+    def get_queryset(self):
+        keyword = self.request.GET.get('keyword')
+        if keyword:
+            new_context = Item.objects.filter(title__contains=keyword, category = "S")
+            return new_context
+        else:
+            new_context = Item.objects.filter(category='S')
+            return new_context
+
+
+class HomeSportwear(ListView):
+    model = Item
+    paginate_by = 8
+    template_name = 'sportwear.html'
+
+    def get_queryset(self):
+        keyword = self.request.GET.get('keyword')
+        if keyword:
+            new_context = Item.objects.filter(title__contains=keyword, category = "SW")
+            return new_context
+        else:
+            new_context = Item.objects.filter(category='SW')
+            return new_context
 
 
 class OrderSummary(LoginRequiredMixin, View):
@@ -35,8 +89,7 @@ class OrderSummary(LoginRequiredMixin, View):
             }
             return render(self.request, 'order_summary.html', context)
         except ObjectDoesNotExist:
-            messages.info(self.request, "You do not have an active order")
-            return redirect('/')
+            return render(self.request, 'order_summary.html')
 
 
 class ItemDetailView(DetailView):
@@ -453,3 +506,11 @@ class RequestRefundView(View):
             except ObjectDoesNotExist:
                 messages.info(self.request, "This is order does not exist ")
                 return redirect('store:request-refund')
+
+
+def handler404(request, exception):
+    return render(request, '404.html')
+
+
+def handler500(request):
+    return render(request, '500.html')

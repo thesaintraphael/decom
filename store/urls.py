@@ -6,6 +6,9 @@ app_name = 'store'
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
+    path('outwears/', views.HomeOutwear.as_view(), name='outwear'),
+    path('shirts/', views.HomeShirt.as_view(), name='shirts'),
+    path('sportwear/', views.HomeSportwear.as_view(), name='sportwear'),
     path('checkout/', views.CheckoutView.as_view(), name='checkout'),
     path('payment/<payment_option>/', views.PaymentView.as_view(), name='payment'),
     path('order_summary/', views.OrderSummary.as_view(), name='order_summary'),

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save
-
+from decimal import Decimal
 
 CATEGORY_CHOICES = (
     ('S', 'Shirt'),
@@ -70,10 +70,12 @@ class OrderItem(models.Model):
         return f"{self.quantity} of {self.item.title}"
 
     def get_total_item_price(self):
-        return self.quantity * self.item.price
+        x = Decimal(self.quantity * self.item.price)
+        return round(x, 2)
 
     def get_total_discount_item_price(self):
-        return self.quantity * self.item.discount_price
+        x = Decimal(self.quantity * self.item.discount_price)
+        return round(x, 2) 
 
     def get_amount_saved(self):
         return str(self.get_total_item_price() - self.get_total_discount_item_price())[:5]
